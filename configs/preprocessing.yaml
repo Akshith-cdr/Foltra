@@ -1,0 +1,20 @@
+random_seed: 42
+classification:
+  train_ratio: 0.70
+  val_ratio: 0.15
+  test_ratio: 0.15
+  stratify: true
+  supported_datasets: [cassava, plantvillage]
+images:
+  size: 224
+  mean: [0.485, 0.456, 0.406]
+  std: [0.229, 0.224, 0.225]
+  extensions: [.jpg, .jpeg, .png, .bmp, .tif, .tiff, .webp, .heic]
+  horizontal_flip_probability: 0.5
+  rotation_degrees: 10
+tobrfv:
+  train_ratio: 0.70
+  val_ratio: 0.15
+  test_ratio: 0.15
+  allowed_angles: [0, 5, 15]
+  canonical_protocol: unresolved

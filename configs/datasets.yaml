@@ -1,0 +1,47 @@
+paths:
+  dataset_root: Datasets
+  manifest_root: data/manifests
+  processed_root: data/processed
+datasets:
+  cassava:
+    path: casava
+    tasks: [classification]
+    manifest_prefix: casava
+  plantvillage:
+    path: plantvillage/color
+    tasks: [classification]
+    representation: color
+    manifest_prefix: plantvillage
+  cds:
+    path: CD&S
+    tasks: [classification, detection, ordinal_severity]
+    classification_path: dataset original
+    annotation_path: dataset annotated/train
+    severity_path: dataset severity
+  plantdoc:
+    path: plantdoc
+    tasks: [detection]
+    images: img
+    annotations: ann
+  plantseg:
+    path: plantseg
+    tasks: [segmentation]
+    images: images
+    masks: annotations
+    annotations: json
+    metadata: Metadata.csv
+  tobrfv:
+    path: TOBRFV-LMID
+    tasks: [classification, multimodal, temporal_candidate]
+    modalities: [RGB, VNIR, VNIR_800nm, VNIR_1000nm]
+    temporal_protocol: unvalidated_day_angle_pot
+  pomegranate:
+    path: pomegranate time series
+    tasks: [temporal_candidate, context]
+    images: images
+    metadata: weekly_report
+  wheat:
+    path: wheat time series
+    tasks: [temporal]
+    images: data
+    reference_checkpoint: models/best.pt

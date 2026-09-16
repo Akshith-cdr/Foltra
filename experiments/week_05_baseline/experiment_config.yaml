@@ -1,0 +1,11 @@
+status: planned_not_run
+name: week_05_baseline
+task: classification
+dataset: cassava
+manifest_prefix: casava
+model_family: ResNet
+model_variant: null
+training_hyperparameters: null
+seed: 42
+results: null
+notes: This is a planning record, not an executable training configuration.
