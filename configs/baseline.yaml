@@ -1,0 +1,19 @@
+seed: 42
+device: auto
+cpu_threads: 4
+output_root: experiments/week_05_baseline/outputs
+manifests:
+  train: plantvillage_train.csv
+  val: plantvillage_val.csv
+  test: plantvillage_test.csv
+training:
+  epochs: 10
+  batch_size: 32
+  num_workers: 0
+  log_every_batches: 20
+  learning_rate: 0.001
+  weight_decay: 0.0001
+smoke:
+  epochs: 1
+  batch_size: 4
+  samples_per_split: 8

@@ -8,10 +8,10 @@ FOLTRA investigates robust crop-health assessment from images and repeated obser
 |---|---|
 | Implemented | Configuration/path utilities, bounded/full dataset audit, class-folder validation, classification splitting/transforms/loaders, TOBRFV indexing, prototype temporal loading/padding, diagnostics and fixture tests |
 | Prepared | Fourteen historical CSV manifests for Cassava, PlantVillage color and two incompatible TOBRFV interpretations |
-| Planned | ResNet training/evaluation, disease detection models, U-Net, severity estimation, robustness experiments, LSTM/GRU, early-risk prediction, contextual/conversational integration |
+| Planned | Disease detection models, U-Net, severity estimation, robustness experiments, LSTM/GRU, early-risk prediction, contextual/conversational integration |
 | Not yet validated | TOBRFV biological identity/filename semantics, severity denominators/thresholds, early-risk labels/horizons/cutoffs, model performance |
 
-There are no FOLTRA training results or trained disease checkpoints. The week-05 experiment is a planning record. The supplied wheat checkpoint is a dataset-associated reference-marker model, not a FOLTRA disease model.
+The Week 5 PlantVillage Color ResNet-18 baseline is implemented; no full training results are claimed. Smoke runs are pipeline checks only. The supplied wheat checkpoint is a dataset-associated reference-marker model, not a FOLTRA disease model.
 
 ## Repository structure
 
@@ -28,11 +28,11 @@ data/processed/          generated reports/caches, ignored
 docs/datasets/           task-specific dataset contracts and limitations
 docs/preprocessing/      workflow and command reference
 docs/experiments/        experiment-record convention
-experiments/week_05_baseline/  planned experiment; no results
+experiments/week_05_baseline/  baseline record and ignored run outputs
 Datasets/                local raw data, ignored; setup complete
 ```
 
-`src` is the current Python package name. Model, training and evaluation plans are documented in `docs/experiments/baseline.md`; unused placeholder modules have been removed.
+`src` is the current Python package name. Model, training and evaluation entry points are documented in `docs/experiments/baseline.md`.
 
 ## Dataset setup
 
@@ -127,4 +127,4 @@ Read [reproducibility](docs/reproducibility.md), [migration record](docs/migrati
 
 Track configuration, small manifests and honest evaluation records. Raw datasets, processed caches, checkpoint binaries and large generated predictions are ignored. Do not report presentation illustrations as measured results.
 
-There is no training command yet. Canonical temporal identity, organ-area severity definitions, and causal early-risk targets must be resolved before those scientific protocols are implemented.
+Run `python -B -m src.training.train_baseline --config baseline --smoke` to verify the Week 5 pipeline. Configure it in `configs/baseline.yaml`; see [baseline instructions](docs/experiments/baseline.md). Canonical temporal identity, organ-area severity definitions, and causal early-risk targets must be resolved before those scientific protocols are implemented.

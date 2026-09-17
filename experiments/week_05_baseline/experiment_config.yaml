@@ -1,11 +1,10 @@
-status: planned_not_run
+status: implemented_no_full_training
 name: week_05_baseline
 task: classification
-dataset: cassava
-manifest_prefix: casava
-model_family: ResNet
-model_variant: null
-training_hyperparameters: null
+dataset: plantvillage_color
+manifest_prefix: plantvillage
+model_variant: resnet18_imagenet
+training_config: configs/baseline.yaml
 seed: 42
 results: null
-notes: This is a planning record, not an executable training configuration.
+notes: Measured outputs belong in individual ignored run directories, not this record.
