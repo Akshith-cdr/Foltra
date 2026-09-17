@@ -1,0 +1,1 @@
+"""FOLTRA scripts smoke package."""
