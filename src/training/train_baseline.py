@@ -4,6 +4,7 @@ import hashlib
 import json
 import random
 from datetime import datetime, timezone
+from time import perf_counter
 from uuid import uuid4
 
 import numpy as np
@@ -71,7 +72,7 @@ def new_output(config, mode):
     return output
 
 
-def run(config, smoke=False):
+def run(config, smoke=False, epoch_reporter=None):
     seed = config["seed"]
     random.seed(seed)
     np.random.seed(seed)
@@ -112,6 +113,7 @@ def run(config, smoke=False):
         optimizer = torch.optim.AdamW(model.parameters(), lr=cfg["learning_rate"], weight_decay=cfg["weight_decay"])
         best_loss = float("inf")
         history = []
+        training_started = perf_counter() if epoch_reporter is not None else None
         for epoch in range(1, cfg["epochs"] + 1):
             model.train()
             total, count = 0.0, 0
@@ -136,6 +138,9 @@ def run(config, smoke=False):
                 torch.save({**metadata, "epoch": epoch, "validation_loss": best_loss,
                             "model_state_dict": model.state_dict(), "optimizer_state_dict": optimizer.state_dict()},
                            output / "best.pt")
+            if epoch_reporter is not None:
+                elapsed = perf_counter() - training_started
+                epoch_reporter(row, epoch, cfg["epochs"], elapsed)
         checkpoint = torch.load(output / "best.pt", map_location=device, weights_only=True)
         model.load_state_dict(checkpoint["model_state_dict"])
         metrics = evaluate(model, loaders["test"], device, len(mapping), "Test",

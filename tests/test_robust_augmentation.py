@@ -14,7 +14,11 @@ from torchvision import transforms
 
 from src.evaluation.evaluate_robust_augmentation import metric_block
 from src.preprocessing.transforms import RandomJpegCompression, build_transforms
-from src.training.train_robust_augmentation import validate_fairness
+from src.training.train_robust_augmentation import (
+    format_duration,
+    report_epoch_progress,
+    validate_fairness,
+)
 from src.utils.config import load_config
 from scripts.colab.package_week_06 import REQUIRED_CODE_MEMBERS, write_code_archive
 
@@ -108,6 +112,19 @@ class RobustAugmentationTests(unittest.TestCase):
             os.environ, {"FOLTRA_DATA_ROOT": temporary}, clear=False
         ):
             self.assertEqual(config.configured_path("dataset_root"), Path(temporary).resolve())
+
+    def test_epoch_progress_reports_metrics_and_measured_timing(self):
+        row = {"train_loss": 1.25, "validation_loss": 0.75, "validation_accuracy": 0.625}
+        with patch("builtins.print") as output:
+            report_epoch_progress(row, epoch=2, total_epochs=10, elapsed=125.0)
+        message = output.call_args.args[0]
+        self.assertIn("Epoch 2/10 complete", message)
+        self.assertIn("train loss 1.250000", message)
+        self.assertIn("validation loss 0.750000", message)
+        self.assertIn("validation accuracy 62.50%", message)
+        self.assertIn("elapsed 00:02:05", message)
+        self.assertIn("ETA 00:08:20", message)
+        self.assertEqual(format_duration(3661.4), "01:01:01")
 
 
 if __name__ == "__main__":
