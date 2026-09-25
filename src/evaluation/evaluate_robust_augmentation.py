@@ -21,6 +21,7 @@ from torch.utils.data import DataLoader
 from src.datasets.plantvillage import create_dataset
 from src.evaluation.evaluate_plantdoc_external import (
     PlantDocObjectDataset,
+    resolve_plantdoc_root,
     sha256_collection,
     sha256_file,
     validate_expected_subset,
@@ -29,7 +30,7 @@ from src.models.resnet_baseline import build_model
 from src.preprocessing.transforms import build_transforms
 from src.training.train_baseline import select_device
 from src.training.train_robust_augmentation import validate_fairness
-from src.utils.config import (dataset_path, ensure_output_path, image_reference, load_config,
+from src.utils.config import (ensure_output_path, image_reference, load_config,
                               manifest_path, project_path)
 from src.utils.progress import progress_batches
 
@@ -41,11 +42,6 @@ def repository_state():
             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
         ).stdout.strip()
     return {"commit": git("rev-parse", "HEAD"), "dirty": bool(git("status", "--porcelain"))}
-
-
-def resolve_plantdoc_root(plantdoc_config):
-    """Resolve PlantDoc through the configured dataset root, including environment overrides."""
-    return dataset_path(plantdoc_config["dataset"])
 
 
 def collect_outputs(model, loader, device, label, log_every):
