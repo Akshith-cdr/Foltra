@@ -12,7 +12,7 @@ import torch
 from PIL import Image
 from torchvision import transforms
 
-from src.evaluation.evaluate_robust_augmentation import metric_block
+from src.evaluation.evaluate_robust_augmentation import metric_block, resolve_plantdoc_root
 from src.preprocessing.transforms import RandomJpegCompression, build_transforms
 from src.training.train_robust_augmentation import (
     format_duration,
@@ -112,6 +112,18 @@ class RobustAugmentationTests(unittest.TestCase):
             os.environ, {"FOLTRA_DATA_ROOT": temporary}, clear=False
         ):
             self.assertEqual(config.configured_path("dataset_root"), Path(temporary).resolve())
+
+    def test_robust_evaluator_resolves_plantdoc_from_environment_root(self):
+        plantdoc_config = load_config("plantdoc_external_evaluation")
+        with tempfile.TemporaryDirectory() as temporary, patch.dict(
+            os.environ, {"FOLTRA_DATA_ROOT": temporary}, clear=False
+        ):
+            expected = Path(temporary).resolve() / "plantdoc"
+            (expected / "test" / "img").mkdir(parents=True)
+            (expected / "test" / "ann").mkdir()
+            self.assertEqual(resolve_plantdoc_root(plantdoc_config), expected)
+            self.assertTrue((resolve_plantdoc_root(plantdoc_config) / "test" / "img").is_dir())
+            self.assertTrue((resolve_plantdoc_root(plantdoc_config) / "test" / "ann").is_dir())
 
     def test_epoch_progress_reports_metrics_and_measured_timing(self):
         row = {"train_loss": 1.25, "validation_loss": 0.75, "validation_accuracy": 0.625}

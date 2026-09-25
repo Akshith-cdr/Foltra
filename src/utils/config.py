@@ -29,7 +29,7 @@ def configured_path(key):
 
 def dataset_path(name):
     config = load_config()
-    return project_path(config["paths"]["dataset_root"]) / config["datasets"][name]["path"]
+    return configured_path("dataset_root") / config["datasets"][name]["path"]
 
 
 def manifest_path(name):

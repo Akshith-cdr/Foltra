@@ -43,6 +43,11 @@ def repository_state():
     return {"commit": git("rev-parse", "HEAD"), "dirty": bool(git("status", "--porcelain"))}
 
 
+def resolve_plantdoc_root(plantdoc_config):
+    """Resolve PlantDoc through the configured dataset root, including environment overrides."""
+    return dataset_path(plantdoc_config["dataset"])
+
+
 def collect_outputs(model, loader, device, label, log_every):
     model.eval()
     targets, logits, record_indices = [], [], []
@@ -262,7 +267,7 @@ def run(checkpoint_name, config_name="robust_augmentation_evaluation", device_na
     pv_metrics = metric_block(pv_targets, pv_predictions, list(range(len(names))), names, names, pv_loss)
 
     plantdoc_config = load_config(config["plantdoc_config"])
-    plantdoc_root = dataset_path(plantdoc_config["dataset"])
+    plantdoc_root = resolve_plantdoc_root(plantdoc_config)
     pd_dataset = PlantDocObjectDataset(
         plantdoc_root, plantdoc_config["split"], plantdoc_config["mappings"],
         class_to_idx, build_transforms(False),
