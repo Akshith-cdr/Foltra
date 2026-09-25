@@ -1,4 +1,5 @@
 """Resolve configured paths from the repository, never the working directory."""
+import os
 from pathlib import Path, PureWindowsPath
 
 import yaml
@@ -21,6 +22,8 @@ def load_config(name="datasets"):
 
 
 def configured_path(key):
+    if key == "dataset_root" and os.environ.get("FOLTRA_DATA_ROOT"):
+        return Path(os.environ["FOLTRA_DATA_ROOT"]).expanduser().resolve()
     return project_path(load_config()["paths"][key])
 
 

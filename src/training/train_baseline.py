@@ -27,7 +27,10 @@ def build_datasets(config, smoke=False, class_to_idx=None):
     datasets = {}
     mapping = class_to_idx
     for split in ("train", "val", "test"):
-        transform = build_transforms(training=split == "train")
+        transform = build_transforms(
+            training=split == "train",
+            augmentation=config.get("augmentation") if split == "train" else None,
+        )
         manifest = config["manifests"][split]
         if manifest == f"plantvillage_{split}.csv":
             dataset = create_dataset(split, transform, mapping)
@@ -76,13 +79,14 @@ def run(config, smoke=False):
     torch.set_num_threads(config["cpu_threads"])
     torch.backends.cudnn.benchmark = False
     torch.backends.cudnn.deterministic = True
-    cfg = config["training"]
+    cfg = dict(config["training"])
     if smoke:
         cfg.update({key: config["smoke"][key] for key in ("epochs", "batch_size")})
     if cfg["epochs"] < 1 or cfg["batch_size"] < 1 or cfg["learning_rate"] <= 0:
         raise ValueError("Epochs, batch size and learning rate must be positive")
-    datasets, mapping = build_datasets(config, smoke)
-    loaders = {split: make_loader(dataset, config, split == "train") for split, dataset in datasets.items()}
+    runtime_config = {**config, "training": cfg}
+    datasets, mapping = build_datasets(runtime_config, smoke)
+    loaders = {split: make_loader(dataset, runtime_config, split == "train") for split, dataset in datasets.items()}
     device = select_device(config["device"])
     print(f"Device: {device}; CPU threads: {config['cpu_threads']}; "
           f"loader workers: {cfg['num_workers']}; samples: "
@@ -91,13 +95,14 @@ def run(config, smoke=False):
     # Keep pretrained downloads in the ignored experiment output tree.
     torch.hub.set_dir(str(ensure_output_path(config["output_root"]) / "torch_cache"))
     metadata = {
-        "config": config, "smoke": smoke, "class_to_idx": mapping,
+        "config": config, "effective_training": cfg, "smoke": smoke, "class_to_idx": mapping,
         "preprocessing": load_config("preprocessing")["images"],
         "manifest_sha256": {split: hashlib.sha256(manifest_path(name).read_bytes()).hexdigest()
                             for split, name in config["manifests"].items()},
         "samples": {split: len(dataset) for split, dataset in datasets.items()},
         "device": str(device), "torch_version": str(torch.__version__),
         "weights": "ResNet18_Weights.IMAGENET1K_V1", "status": "running",
+        "training_augmentation": config.get("augmentation", {"profile": "week_05_baseline"}),
     }
     record = output / "run.json"
     record.write_text(json.dumps(metadata, indent=2), encoding="utf-8")

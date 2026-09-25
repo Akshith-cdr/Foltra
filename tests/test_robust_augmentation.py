@@ -1,6 +1,11 @@
 """Offline checks for the controlled Week 6 augmentation experiment."""
 import random
+import os
+import tempfile
 import unittest
+from pathlib import Path
+from unittest.mock import patch
+from zipfile import ZipFile
 
 import numpy as np
 import torch
@@ -11,6 +16,7 @@ from src.evaluation.evaluate_robust_augmentation import metric_block
 from src.preprocessing.transforms import RandomJpegCompression, build_transforms
 from src.training.train_robust_augmentation import validate_fairness
 from src.utils.config import load_config
+from scripts.colab.package_week_06 import REQUIRED_CODE_MEMBERS, write_code_archive
 
 
 class RobustAugmentationTests(unittest.TestCase):
@@ -82,6 +88,26 @@ class RobustAugmentationTests(unittest.TestCase):
         self.assertAlmostEqual(metrics["macro_f1"], (1 + 2 / 3) / 3)
         self.assertEqual([row["support"] for row in metrics["per_class"]], [1, 1, 1])
         self.assertEqual(metrics["confusion_matrix"]["counts"], [[1, 0, 0], [0, 1, 0], [0, 1, 0]])
+
+    def test_colab_code_archive_contains_week_06_dependencies(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            archive_path = Path(temporary) / "code.zip"
+            manifest = write_code_archive(archive_path)
+            with ZipFile(archive_path) as archive:
+                members = set(archive.namelist())
+            self.assertTrue(REQUIRED_CODE_MEMBERS.issubset(members))
+            self.assertEqual(set(manifest["required_members_verified"]), REQUIRED_CODE_MEMBERS)
+            self.assertIn("week_06_package_manifest.json", members)
+
+    def test_colab_dataset_root_override_is_opt_in(self):
+        from src.utils import config
+        with patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("FOLTRA_DATA_ROOT", None)
+            self.assertEqual(config.configured_path("dataset_root"), config.PROJECT_ROOT / "Datasets")
+        with tempfile.TemporaryDirectory() as temporary, patch.dict(
+            os.environ, {"FOLTRA_DATA_ROOT": temporary}, clear=False
+        ):
+            self.assertEqual(config.configured_path("dataset_root"), Path(temporary).resolve())
 
 
 if __name__ == "__main__":
