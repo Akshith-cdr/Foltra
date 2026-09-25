@@ -1,0 +1,50 @@
+seed: 42
+device: auto
+cpu_threads: 4
+output_root: experiments/week_06_robust_augmentation/training/outputs
+manifests:
+  train: plantvillage_train.csv
+  val: plantvillage_val.csv
+  test: plantvillage_test.csv
+training:
+  epochs: 10
+  batch_size: 32
+  num_workers: 0
+  log_every_batches: 20
+  learning_rate: 0.001
+  weight_decay: 0.0001
+augmentation:
+  profile: field_style_v1
+  order:
+    - to_rgb
+    - random_resized_crop
+    - random_horizontal_flip
+    - color_jitter
+    - gaussian_blur
+    - jpeg_compression
+    - to_tensor
+    - imagenet_normalize
+  random_resized_crop:
+    output_size: 224
+    scale: [0.80, 1.00]
+    ratio: [0.90, 1.10]
+    interpolation: bilinear
+    antialias: true
+  horizontal_flip_probability: 0.50
+  color_jitter:
+    probability: 0.80
+    brightness: 0.20
+    contrast: 0.20
+    saturation: 0.15
+    hue: 0.03
+  gaussian_blur:
+    probability: 0.15
+    kernel_size: 3
+    sigma: [0.10, 1.00]
+  jpeg_compression:
+    probability: 0.15
+    quality: [75, 95]
+smoke:
+  epochs: 1
+  batch_size: 4
+  samples_per_split: 8
