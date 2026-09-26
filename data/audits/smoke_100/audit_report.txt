@@ -1,0 +1,24 @@
+FOLTRA DATASET AUDIT
+{
+  "scope": "bounded_sample",
+  "limit": 100,
+  "total_images": 100,
+  "counting_unit": "image files, including masks and alternate representations",
+  "datasets": {
+    "CD&S": 100
+  },
+  "splits": {
+    "train": 100
+  },
+  "extensions": {
+    ".jpg": 100
+  },
+  "image_status": {
+    "ok": 100
+  },
+  "resolutions": {
+    "3024x3024": 98,
+    "2555x2555": 1,
+    "3018x3018": 1
+  }
+}

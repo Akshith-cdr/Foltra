@@ -1,0 +1,14 @@
+seed: 42
+device: auto
+cpu_threads: 4
+batch_size: 32
+num_workers: 0
+log_every_batches: 20
+plantdoc_config: plantdoc_external_evaluation
+output_root: experiments/week_06_robust_augmentation/evaluation/outputs
+baseline:
+  checkpoint: experiments/week_05_baseline/outputs/train_20260916T171709Z_f582a465/best.pt
+  plantvillage_metrics: experiments/week_05_baseline/outputs/train_20260916T171709Z_f582a465/test/metrics.json
+  plantdoc_metrics: experiments/plantdoc_external_evaluation/outputs/evaluation_20260924T061804Z_3d272ea1/metrics.json
+  confidence_summary: experiments/plantdoc_external_evaluation/confidence_analysis/confidence_summary.csv
+

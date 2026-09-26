@@ -1,0 +1,7 @@
+# Observed direct dependencies; not a complete transitive/CUDA lock.
+Pillow==11.3.0
+pandas==2.2.3
+scikit-learn==1.5.2
+torch==2.9.1
+torchvision==0.24.1
+PyYAML==6.0.3
