@@ -1,0 +1,29 @@
+{
+  "run": "train_20260916T171709Z_f582a465",
+  "input_sha256": {
+    "history.json": "724d5e2a9fa1236c058492c1675412af257fbc59a08c42231a30a7435a2bab02",
+    "run.json": "281354fd623aca12a7406eca5071639b64acb9ecc663865f5405a654c5fefeea",
+    "test/metrics.json": "3aaf9bca7aa9bea0b449ecddac47a61b7a6214b3eb1119163ade8410cbf26185",
+    "test/confusion_matrix.csv": "432f23d8ce6a8cc5790df0bc7a1ba4cfb29969b201838c6f6813410f42526e30"
+  },
+  "manifest_sha256": {
+    "train": "2ff11fedfd5c035a184f046cb8e3fef56d901c723ebe885694addf9a9d3e6478",
+    "val": "0918fdd5f8c12ad3ce099910f56c58548d2763f880361716eb7301b1ce87112c",
+    "test": "189b06fab919b3dbcdc1f30259470703aa532c5bb379a82a583547df4fc32ae5"
+  },
+  "script_sha256": "e29c401522439593e0bc3bbb512d82288db570d6714b37938dcf146a30d818a5",
+  "versions": {
+    "python": "3.11.0",
+    "numpy": "2.1.3",
+    "matplotlib": "3.9.2"
+  },
+  "checks": [
+    "CSV/JSON matrices identical",
+    "class order verified",
+    "sample counts and class supports verified",
+    "accuracy and macro F1 reproduced",
+    "manifest hashes match run",
+    "best epoch matches minimum validation loss",
+    "input hashes unchanged"
+  ]
+}

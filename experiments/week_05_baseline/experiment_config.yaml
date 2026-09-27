@@ -1,0 +1,10 @@
+status: implemented_no_full_training
+name: week_05_baseline
+task: classification
+dataset: plantvillage_color
+manifest_prefix: plantvillage
+model_variant: resnet18_imagenet
+training_config: configs/baseline.yaml
+seed: 42
+results: null
+notes: Measured outputs belong in individual ignored run directories, not this record.

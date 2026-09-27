@@ -1,0 +1,242 @@
+{
+  "assumptions": {
+    "seed": 42,
+    "ratios": [
+      0.7,
+      0.15,
+      0.15
+    ],
+    "classification": "label-stratified; historical unsorted filename enumeration",
+    "tobrfv_sequence_frame": "group + status/identifier; final field treated as frame",
+    "tobrfv_day_angle_pot": "group + pot_id; filename semantics not independently validated"
+  },
+  "files": [
+    {
+      "source": "BTP/data/splits/casava_test.csv",
+      "destination": "data/manifests/casava_test.csv",
+      "rows": 3210,
+      "columns": [
+        "path",
+        "label"
+      ],
+      "source_sha256": "5cae5ba7b60a81c9ad96a82f58ffdb78a912711fe3a54e5ef13a287bdb0ded89",
+      "destination_sha256": "6a9d7be706e5700b00ce27dfb46d7c55a12893e1e5265fc07e81873378e60208",
+      "transformation": "Path-reference columns only: backslash to slash; membership, row order and non-path fields unchanged."
+    },
+    {
+      "source": "BTP/data/splits/casava_train.csv",
+      "destination": "data/manifests/casava_train.csv",
+      "rows": 14977,
+      "columns": [
+        "path",
+        "label"
+      ],
+      "source_sha256": "250393867466a0eace24c520979ffbf542c115130110bc2575d071a205bbe677",
+      "destination_sha256": "62c2c70d8cc260e78122d8addcd6836bd212db9c884a6a2f9b84f6bb7b1a8279",
+      "transformation": "Path-reference columns only: backslash to slash; membership, row order and non-path fields unchanged."
+    },
+    {
+      "source": "BTP/data/splits/casava_val.csv",
+      "destination": "data/manifests/casava_val.csv",
+      "rows": 3210,
+      "columns": [
+        "path",
+        "label"
+      ],
+      "source_sha256": "e53a2071dbf3cbcc721bf6e719c04605e1b6bdde0cba35310476c4196a97555c",
+      "destination_sha256": "ee81686b5a412da47434a1bbb737421aff281a902700b0f468dcd6335beebc51",
+      "transformation": "Path-reference columns only: backslash to slash; membership, row order and non-path fields unchanged."
+    },
+    {
+      "source": "BTP/data/splits/plantvillage_test.csv",
+      "destination": "data/manifests/plantvillage_test.csv",
+      "rows": 8146,
+      "columns": [
+        "path",
+        "label"
+      ],
+      "source_sha256": "c3c001c464524bbf2d17808e6beae12a9ee550f7d01c79473a06e67dca71d845",
+      "destination_sha256": "189b06fab919b3dbcdc1f30259470703aa532c5bb379a82a583547df4fc32ae5",
+      "transformation": "Path-reference columns only: backslash to slash; membership, row order and non-path fields unchanged."
+    },
+    {
+      "source": "BTP/data/splits/plantvillage_train.csv",
+      "destination": "data/manifests/plantvillage_train.csv",
+      "rows": 38013,
+      "columns": [
+        "path",
+        "label"
+      ],
+      "source_sha256": "308e9577e27f355744bd24633fe1c273834bda915647b15d1515daa0d4ea8e80",
+      "destination_sha256": "2ff11fedfd5c035a184f046cb8e3fef56d901c723ebe885694addf9a9d3e6478",
+      "transformation": "Path-reference columns only: backslash to slash; membership, row order and non-path fields unchanged."
+    },
+    {
+      "source": "BTP/data/splits/plantvillage_val.csv",
+      "destination": "data/manifests/plantvillage_val.csv",
+      "rows": 8146,
+      "columns": [
+        "path",
+        "label"
+      ],
+      "source_sha256": "5e26f51d7ff9e2a9d64b4b109ea734f1636f783ec2acc6a761c37f714ea727ac",
+      "destination_sha256": "0918fdd5f8c12ad3ce099910f56c58548d2763f880361716eb7301b1ce87112c",
+      "transformation": "Path-reference columns only: backslash to slash; membership, row order and non-path fields unchanged."
+    },
+    {
+      "source": "BTP/data/splits/tobrfv_index.csv",
+      "destination": "data/manifests/tobrfv_index.csv",
+      "rows": 10178,
+      "columns": [
+        "sample_id",
+        "group",
+        "label",
+        "plant",
+        "experiment",
+        "rgb_path",
+        "vnir_path",
+        "vnir_800nm_path",
+        "vnir_1000nm_path"
+      ],
+      "source_sha256": "01490f077d616db729ebb03243c4a60e7dfc13a8281a9026ff332c6987e019cd",
+      "destination_sha256": "5be12a3de6fbdcc291e8fa5f6f94dd270e7ff77469eadef26c482787351cefb8",
+      "transformation": "Path-reference columns only: backslash to slash; membership, row order and non-path fields unchanged."
+    },
+    {
+      "source": "BTP/data/splits/tobrfv_temporal_index.csv",
+      "destination": "data/manifests/tobrfv_temporal_index.csv",
+      "rows": 10178,
+      "columns": [
+        "group",
+        "status",
+        "pot_id",
+        "day",
+        "angle",
+        "rgb_path",
+        "vnir_path",
+        "vnir_800nm_path",
+        "vnir_1000nm_path"
+      ],
+      "source_sha256": "0be8d78c12e6c3496487895d11efecfb268a10393cb0bbf76fd773736d49ce15",
+      "destination_sha256": "b338bfaa1400fcafb0b385a5f49481a2c978114344994a690cbc9b7f5ea89c5e",
+      "transformation": "Path-reference columns only: backslash to slash; membership, row order and non-path fields unchanged."
+    },
+    {
+      "source": "BTP/data/splits/tobrfv_temporal_test.csv",
+      "destination": "data/manifests/tobrfv_temporal_test.csv",
+      "rows": 1542,
+      "columns": [
+        "group",
+        "status",
+        "pot_id",
+        "day",
+        "angle",
+        "rgb_path",
+        "vnir_path",
+        "vnir_800nm_path",
+        "vnir_1000nm_path",
+        "sequence_id",
+        "split"
+      ],
+      "source_sha256": "95a9713da16ea7163471e995c0973e6975b4621983b497eb2fc3bfc35c8400d0",
+      "destination_sha256": "8115e9b9f8b53dfe7fff11c0b820911b09f88a60c9690f067bd7ee00ad4901cc",
+      "transformation": "Path-reference columns only: backslash to slash; membership, row order and non-path fields unchanged."
+    },
+    {
+      "source": "BTP/data/splits/tobrfv_temporal_train.csv",
+      "destination": "data/manifests/tobrfv_temporal_train.csv",
+      "rows": 7056,
+      "columns": [
+        "group",
+        "status",
+        "pot_id",
+        "day",
+        "angle",
+        "rgb_path",
+        "vnir_path",
+        "vnir_800nm_path",
+        "vnir_1000nm_path",
+        "sequence_id",
+        "split"
+      ],
+      "source_sha256": "4d2fc5309da5b28818bab38c8d65bbe0dfbda72f964f1d893e5638cc6840701d",
+      "destination_sha256": "d3e301d60dea3a1fc108afe638025e2cc1a7149c7cd51bd42727799eaacaecf0",
+      "transformation": "Path-reference columns only: backslash to slash; membership, row order and non-path fields unchanged."
+    },
+    {
+      "source": "BTP/data/splits/tobrfv_temporal_val.csv",
+      "destination": "data/manifests/tobrfv_temporal_val.csv",
+      "rows": 1580,
+      "columns": [
+        "group",
+        "status",
+        "pot_id",
+        "day",
+        "angle",
+        "rgb_path",
+        "vnir_path",
+        "vnir_800nm_path",
+        "vnir_1000nm_path",
+        "sequence_id",
+        "split"
+      ],
+      "source_sha256": "d429ad7f923cb1b95f534b083172fff268af822da051083a0548c6bdb7db29f6",
+      "destination_sha256": "f62f235594ca8566e433fe6eb121305e8607b3e5dbd49cf3f62c659053732f7a",
+      "transformation": "Path-reference columns only: backslash to slash; membership, row order and non-path fields unchanged."
+    },
+    {
+      "source": "BTP/data/splits/tobrfv_test.csv",
+      "destination": "data/manifests/tobrfv_test.csv",
+      "rows": 1520,
+      "columns": [
+        "split",
+        "group",
+        "plant_type",
+        "sequence_id",
+        "identifier",
+        "capture",
+        "frame",
+        "rgb_path"
+      ],
+      "source_sha256": "97a9c104c03dcb3f739d739867431a6f85b1296d664f729e564ad795a8e72cbc",
+      "destination_sha256": "7fa45d10d5e74fa59029bc5722981d69a36af697d38932b16da0d3a46eaf91a3",
+      "transformation": "Path-reference columns only: backslash to slash; membership, row order and non-path fields unchanged."
+    },
+    {
+      "source": "BTP/data/splits/tobrfv_train.csv",
+      "destination": "data/manifests/tobrfv_train.csv",
+      "rows": 7087,
+      "columns": [
+        "split",
+        "group",
+        "plant_type",
+        "sequence_id",
+        "identifier",
+        "capture",
+        "frame",
+        "rgb_path"
+      ],
+      "source_sha256": "c9c584f0255f6636549d3bebeb6369f9714685a8e723da764850f59203561fa1",
+      "destination_sha256": "f7160e2bceb58e8280869133b919d1a8299af2de590e63b67a81f18127e8449a",
+      "transformation": "Path-reference columns only: backslash to slash; membership, row order and non-path fields unchanged."
+    },
+    {
+      "source": "BTP/data/splits/tobrfv_val.csv",
+      "destination": "data/manifests/tobrfv_val.csv",
+      "rows": 1572,
+      "columns": [
+        "split",
+        "group",
+        "plant_type",
+        "sequence_id",
+        "identifier",
+        "capture",
+        "frame",
+        "rgb_path"
+      ],
+      "source_sha256": "66d511975f1980a790d391dc8173c20bebac96e088fee69e659b4254d80722a5",
+      "destination_sha256": "67a0cd104b35ac96ec2fc233eb0d2ba5aa9cf8ca88fea75d1acf3cfc0d79c9d8",
+      "transformation": "Path-reference columns only: backslash to slash; membership, row order and non-path fields unchanged."
+    }
+  ]
+}

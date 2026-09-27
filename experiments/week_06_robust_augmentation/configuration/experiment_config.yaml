@@ -1,0 +1,19 @@
+status: implemented_awaiting_colab_gpu_run
+name: week_06_robust_augmentation
+experiment: Field-Style Robust Augmentation
+hypothesis: >-
+  Training the PlantVillage classifier with controlled visual perturbations representative
+  of external-domain variability can improve PlantDoc cross-domain performance while
+  retaining strong PlantVillage performance.
+training_config: configs/robust_augmentation.yaml
+evaluation_config: configs/robust_augmentation_evaluation.yaml
+model: resnet18_imagenet
+classes: 38
+epochs: 10
+seed: 42
+independent_variable: training_augmentation_pipeline
+plantdoc_training_use: prohibited
+full_training_environment: google_colab_gpu
+checkpoint_selection: minimum_validation_loss
+baseline_checkpoint: experiments/week_05_baseline/outputs/train_20260916T171709Z_f582a465/best.pt
+

@@ -1,0 +1,6 @@
+Pillow
+pandas
+scikit-learn
+torch
+torchvision
+PyYAML
