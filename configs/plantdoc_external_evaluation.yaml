@@ -1,0 +1,27 @@
+seed: 42
+device: auto
+cpu_threads: 4
+batch_size: 32
+num_workers: 0
+log_every_batches: 1
+checkpoint: experiments/week_05_baseline/outputs/train_20260916T171709Z_f582a465/best.pt
+dataset: plantdoc
+split: test
+output_root: experiments/plantdoc_external_evaluation/outputs
+expected:
+  source_images: 97
+  crops: 179
+  classes: 12
+mappings:
+  Apple Scab Leaf: Apple___Apple_scab
+  Corn Gray leaf spot: Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot
+  grape leaf black rot: Grape___Black_rot
+  Potato leaf early blight: Potato___Early_blight
+  Potato leaf late blight: Potato___Late_blight
+  Squash Powdery mildew leaf: Squash___Powdery_mildew
+  Tomato Early blight leaf: Tomato___Early_blight
+  Tomato leaf bacterial spot: Tomato___Bacterial_spot
+  Tomato leaf late blight: Tomato___Late_blight
+  Tomato leaf mosaic virus: Tomato___Tomato_mosaic_virus
+  Tomato mold leaf: Tomato___Leaf_Mold
+  Tomato Septoria leaf spot: Tomato___Septoria_leaf_spot

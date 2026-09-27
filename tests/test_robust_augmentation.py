@@ -1,11 +1,11 @@
 """Offline checks for the controlled Week 6 augmentation experiment."""
+import json
 import random
 import os
 import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
-from zipfile import ZipFile
 
 import numpy as np
 import torch
@@ -19,8 +19,8 @@ from src.training.train_robust_augmentation import (
     report_epoch_progress,
     validate_fairness,
 )
-from src.utils.config import load_config
-from scripts.colab.package_week_06 import REQUIRED_CODE_MEMBERS, write_code_archive
+from src.utils.config import load_config, project_path
+from scripts.colab.package_week_06 import REQUIRED_TRACKED_FILES, verify_sources_tracked
 
 
 class RobustAugmentationTests(unittest.TestCase):
@@ -93,15 +93,37 @@ class RobustAugmentationTests(unittest.TestCase):
         self.assertEqual([row["support"] for row in metrics["per_class"]], [1, 1, 1])
         self.assertEqual(metrics["confusion_matrix"]["counts"], [[1, 0, 0], [0, 1, 0], [0, 1, 0]])
 
-    def test_colab_code_archive_contains_week_06_dependencies(self):
-        with tempfile.TemporaryDirectory() as temporary:
-            archive_path = Path(temporary) / "code.zip"
-            manifest = write_code_archive(archive_path)
-            with ZipFile(archive_path) as archive:
-                members = set(archive.namelist())
-            self.assertTrue(REQUIRED_CODE_MEMBERS.issubset(members))
-            self.assertEqual(set(manifest["required_members_verified"]), REQUIRED_CODE_MEMBERS)
-            self.assertIn("week_06_package_manifest.json", members)
+    def test_colab_packager_requires_one_committed_code_source(self):
+        self.assertEqual(
+            set(verify_sources_tracked(REQUIRED_TRACKED_FILES, changed=set())),
+            REQUIRED_TRACKED_FILES,
+        )
+        with self.assertRaisesRegex(RuntimeError, "must be committed"):
+            verify_sources_tracked(
+                REQUIRED_TRACKED_FILES - {"src/evaluation/evaluate_plantdoc_external.py"},
+                changed=set(),
+            )
+        with self.assertRaisesRegex(RuntimeError, "Uncommitted changes"):
+            verify_sources_tracked(
+                REQUIRED_TRACKED_FILES,
+                changed={"src/evaluation/evaluate_robust_augmentation.py"},
+            )
+
+    def test_colab_notebook_uses_one_code_source_and_safe_environment_order(self):
+        notebook = json.loads(
+            project_path("notebooks/week_06_robust_augmentation_colab.ipynb").read_text(
+                encoding="utf-8"
+            )
+        )
+        source = "\n".join("".join(cell.get("source", [])) for cell in notebook["cells"])
+        self.assertIn("git', 'clone", source)
+        self.assertNotIn("foltra_week06_code.zip", source)
+        unset_at = source.index("os.environ.pop('FOLTRA_DATA_ROOT'")
+        tests_at = source.index("unittest', 'discover")
+        set_at = source.index("os.environ['FOLTRA_DATA_ROOT']")
+        self.assertLess(unset_at, tests_at)
+        self.assertLess(tests_at, set_at)
+        self.assertIn("EXISTING_CHECKPOINT", source)
 
     def test_colab_dataset_root_override_is_opt_in(self):
         from src.utils import config

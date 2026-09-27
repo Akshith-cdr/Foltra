@@ -248,6 +248,19 @@ def run(checkpoint_name, config_name="robust_augmentation_evaluation", device_na
     device = select_device(device_name or config["device"])
     class_to_idx = checkpoint["class_to_idx"]
     names = sorted(class_to_idx, key=class_to_idx.get)
+
+    # Validate the complete external subset before the longer PlantVillage pass.
+    # This makes path/configuration failures immediate and avoids wasting GPU time.
+    plantdoc_config = load_config(config["plantdoc_config"])
+    plantdoc_root = resolve_plantdoc_root(plantdoc_config)
+    pd_dataset = PlantDocObjectDataset(
+        plantdoc_root, plantdoc_config["split"], plantdoc_config["mappings"],
+        class_to_idx, build_transforms(False),
+    )
+    observed = validate_expected_subset(pd_dataset, plantdoc_config["expected"])
+    print(f"Validated PlantDoc root: {plantdoc_root}", flush=True)
+    print(f"Validated PlantDoc subset: {observed}", flush=True)
+
     model = build_model(len(names), pretrained=False)
     model.load_state_dict(checkpoint["model_state_dict"])
     model.requires_grad_(False); model.eval(); model.to(device)
@@ -262,13 +275,6 @@ def run(checkpoint_name, config_name="robust_augmentation_evaluation", device_na
     pv_predictions = pv_logits.argmax(axis=1)
     pv_metrics = metric_block(pv_targets, pv_predictions, list(range(len(names))), names, names, pv_loss)
 
-    plantdoc_config = load_config(config["plantdoc_config"])
-    plantdoc_root = resolve_plantdoc_root(plantdoc_config)
-    pd_dataset = PlantDocObjectDataset(
-        plantdoc_root, plantdoc_config["split"], plantdoc_config["mappings"],
-        class_to_idx, build_transforms(False),
-    )
-    observed = validate_expected_subset(pd_dataset, plantdoc_config["expected"])
     pd_loader = DataLoader(pd_dataset, batch_size=int(config["batch_size"]), shuffle=False,
                            num_workers=int(config["num_workers"]))
     pd_targets, pd_logits, record_indices, pd_loss = collect_outputs(
